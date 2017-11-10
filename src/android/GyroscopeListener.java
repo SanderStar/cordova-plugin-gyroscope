@@ -131,6 +131,7 @@ public class GyroscopeListener extends CordovaPlugin implements SensorEventListe
      * @return          status of listener
     */
     private int start() {
+        Log.d(TAG, "start");
         // If already starting or running, then just return
         if ((this.status == GyroscopeListener.RUNNING) || (this.status == GyroscopeListener.STARTING)) {
             return this.status;
@@ -168,6 +169,7 @@ public class GyroscopeListener extends CordovaPlugin implements SensorEventListe
      * Stop listening to gyroscope sensor.
      */
     private void stop() {
+        Log.d(TAG, "stop");
         stopTimeout();
         if (this.status != GyroscopeListener.STOPPED) {
             this.sensorManager.unregisterListener(this);
@@ -182,6 +184,7 @@ public class GyroscopeListener extends CordovaPlugin implements SensorEventListe
      * Called two seconds after starting the listener.
      */
     private void timeout() {
+        Log.d(TAG, "timeout");
         if (this.status == GyroscopeListener.STARTING) {
             this.setStatus(GyroscopeListener.ERROR_FAILED_TO_START);
             this.fail(GyroscopeListener.ERROR_FAILED_TO_START, "Gyroscope could not be started.");
@@ -195,6 +198,7 @@ public class GyroscopeListener extends CordovaPlugin implements SensorEventListe
      * @param accuracy
      */
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        Log.d(TAG, "onAccuracyChanged");
         // Only look at gyroscope events
         if (sensor.getType() != Sensor.TYPE_GYROSCOPE) {
             return;
@@ -213,6 +217,7 @@ public class GyroscopeListener extends CordovaPlugin implements SensorEventListe
      * @param SensorEvent event
      */
     public void onSensorChanged(SensorEvent event) {
+        Log.d(TAG, "onSensorChanged");
         // Only look at gyroscope events
         if (event.sensor.getType() != Sensor.TYPE_GYROSCOPE) {
             return;
@@ -241,18 +246,21 @@ public class GyroscopeListener extends CordovaPlugin implements SensorEventListe
      */
     @Override
     public void onReset() {
+        Log.d(TAG, "onReset");
         if (this.status == GyroscopeListener.RUNNING) {
             this.stop();
         }
     }
     @Override
     public void onResume(boolean multitasking) {
+        Log.d(TAG, "onResume");
         if (this.status == GyroscopeListener.STOPPED) {
             this.start();
         }
     }
     @Override
     public void onPause(boolean multitasking) {
+        Log.d(TAG, "onPause");
         if (this.status == GyroscopeListener.RUNNING) {
             this.stop();
         }
@@ -261,6 +269,7 @@ public class GyroscopeListener extends CordovaPlugin implements SensorEventListe
 
     // Sends an error back to JS
     private void fail(int code, String message) {
+        Log.d(TAG, "fail " + code + " " + message);
         // Error object
         JSONObject errorObj = new JSONObject();
         try {
@@ -275,6 +284,7 @@ public class GyroscopeListener extends CordovaPlugin implements SensorEventListe
     }
 
     private void win() {
+        Log.d(TAG, "win");
         // Success return object
         PluginResult result = new PluginResult(PluginResult.Status.OK, this.getAngularSpeedJSON());
         result.setKeepCallback(true);
@@ -282,6 +292,7 @@ public class GyroscopeListener extends CordovaPlugin implements SensorEventListe
     }
 
     private void setStatus(int status) {
+        Log.d(TAG, "setStatus " + status);
         this.status = status;
     }
     private JSONObject getAngularSpeedJSON() {
