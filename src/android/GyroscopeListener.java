@@ -24,6 +24,8 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.Looper;
 
+import android.util.Log;
+
 /**
  * This class listens to the gyroscope sensor and stores the latest
  * speed value.
@@ -34,7 +36,9 @@ public class GyroscopeListener extends CordovaPlugin implements SensorEventListe
     public static int STARTING = 1;
     public static int RUNNING = 2;
     public static int ERROR_FAILED_TO_START = 3;
-   
+
+    public static final String TAG = "GYROSCOPE";
+
     private float x, y, z;  // most recent speed values
     private long timestamp;  // time of most recent value
     private int status;  // status of listener
@@ -85,6 +89,7 @@ public class GyroscopeListener extends CordovaPlugin implements SensorEventListe
      * @return              Whether the action was valid.
      */
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) {
+        Log.d(TAG, "Action is " + action);
         if (action.equals("start")) {
             this.callbackContext = callbackContext;
             if (this.status != GyroscopeListener.RUNNING) {
@@ -122,7 +127,7 @@ public class GyroscopeListener extends CordovaPlugin implements SensorEventListe
     //
     /**
      * Start listening for speed sensor.
-     * 
+     *
      * @return          status of listener
     */
     private int start() {
