@@ -219,16 +219,19 @@ public class GyroscopeListener extends CordovaPlugin implements SensorEventListe
     public void onSensorChanged(SensorEvent event) {
         Log.d(TAG, "onSensorChanged");
         // Only look at gyroscope events
+        Log.d(TAG, "Senor type " + event.sensor.getType());
         if (event.sensor.getType() != Sensor.TYPE_GYROSCOPE) {
             return;
         }
 
         // If not running, then just return
+        Log.d(TAG, "Senor status " + this.status);
         if (this.status == GyroscopeListener.STOPPED) {
             return;
         }
         this.setStatus(GyroscopeListener.RUNNING);
 
+        Log.d(TAG, "Senor accuracy " + this.accuracy);
         if (this.accuracy >= SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM) {
 
             // Save time that event was received
@@ -236,6 +239,11 @@ public class GyroscopeListener extends CordovaPlugin implements SensorEventListe
             this.x = event.values[0];
             this.y = event.values[1];
             this.z = event.values[2];
+
+            Log.d(TAG, "Data " + this.timestamp
+              + " x " + this.x
+              + " y " + this.y
+              + " z " + this.z);
 
             this.win();
         }
